@@ -1,23 +1,22 @@
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { GatewayModule } from './gateway.module';
 import { SwaggerModule } from '@nestjs/swagger';
 import { DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.enableCors(
-    {
-      origin: '*',
-    }
-  );
+  const app = await NestFactory.create(GatewayModule);
+  app.enableCors({
+    origin: '*',
+  });
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Attendance Management System')
     .setDescription('API documentation for the Attendance Management System')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('api', app, document,{
+  SwaggerModule.setup('api', app, document, {
     swaggerOptions: {
       persistAuthorization: true,
     },

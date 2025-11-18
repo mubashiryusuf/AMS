@@ -1,15 +1,15 @@
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './auth.module';
+import { StudentModule } from './student.module';
 import { Transport } from '@nestjs/microservices';
 import { SERVICES } from '@shared/constants';
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice(AppModule,{
+  const app = await NestFactory.createMicroservice(StudentModule,{
     transport: Transport.RMQ,
     options: {
       urls: [process.env.RMQ_URI || 'amqp://localhost:5672'],
-      queue: SERVICES.AUTH,
+      queue: SERVICES.STUDENT,
       queueOptions: {
         durable: true,
       },
