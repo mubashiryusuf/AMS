@@ -1,10 +1,10 @@
 FROM node:20-alpine
-WORKDIR /var/www/gateway
+WORKDIR /var/www/student
 RUN corepack enable && corepack prepare pnpm@latest --activate
 ENV CI=true
 COPY package.json pnpm-lock.yaml* ./
 RUN pnpm install --frozen-lockfile
 COPY . .
-RUN pnpm nx build gateway
+RUN pnpm nx build student
 EXPOSE 8000
-CMD ["node", "./dist/apps/gateway/main.js"]
+CMD ["node", "./dist/apps/student/main.js"]

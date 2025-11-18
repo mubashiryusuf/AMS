@@ -1,9 +1,10 @@
 FROM node:20-alpine
- 
-RUN mkdir -p /var/www/auth
 WORKDIR /var/www/auth
-ADD . /var/www/auth
-RUN npm install -f
-RUN npx nx build auth
+RUN corepack enable && corepack prepare pnpm@latest --activate
+ENV CI=true
+COPY package.json pnpm-lock.yaml* ./
+RUN pnpm install --frozen-lockfile
+COPY . .
+RUN pnpm nx build auth
 EXPOSE 8000
 CMD ["node", "./dist/apps/auth/main.js"]
