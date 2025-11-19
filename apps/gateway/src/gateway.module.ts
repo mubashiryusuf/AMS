@@ -4,15 +4,11 @@ import { GatewayService } from './app/gateway.service';
 import { SERVICES } from '@shared/constants';
 import { ConfigModule } from '@nestjs/config';
 import { RmqModule } from '@shared/rmq.module';
+import { DatabaseModule } from '@shared/database.module';
+import { SharedModule } from '@shared/shared.module';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '.env',
-    }),
-    RmqModule.registerMultipleAsync([SERVICES.AUTH]),
-  ],
+  imports: [SharedModule, RmqModule.registerMultipleAsync([SERVICES.AUTH])],
   controllers: [AuthController],
   providers: [GatewayService],
 })

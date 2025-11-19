@@ -49,6 +49,22 @@ services:
     networks:
       - app-network
 
+  mongodb:
+    image: mongo:7.0
+    container_name: mongodb
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_DATABASE: attendance-management
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - app-network
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
+
 networks:
   app-network:
     driver: bridge
