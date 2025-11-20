@@ -5,15 +5,17 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, RegisterDto, LoginDto } from '@shared';
 import * as bcrypt from 'bcrypt';
+import { LoginDto, RegisterDto, User } from '@shared';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class AuthService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  
   async signup(dto: RegisterDto) {
     const exists = await this.userModel.findOne({ email: dto.email });
-    if (exists) throw new BadRequestException('Email already exists');
+    if (exists) throw new RpcException('Email already exists');
 
     const hashed = await bcrypt.hash(dto.password, 10);
 
@@ -34,9 +36,6 @@ export class AuthService {
 
     const match = await bcrypt.compare(dto.password, user.password);
     if (!match) throw new UnauthorizedException('Invalid credentials');
-
-    // Typically you generate JWT here
-    // but you said only user+login, so keeping it simple.
 
     return {
       message: 'Login successful',

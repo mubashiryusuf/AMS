@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { GatewayModule } from './gateway.module';
 import { SwaggerModule } from '@nestjs/swagger';
@@ -6,6 +6,18 @@ import { DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(GatewayModule);
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,        
+      forbidNonWhitelisted: false, 
+      transform: true,          
+      transformOptions: {
+        enableImplicitConversion: true, 
+      },
+    }),
+  );
+
   app.enableCors({
     origin: '*',
   });

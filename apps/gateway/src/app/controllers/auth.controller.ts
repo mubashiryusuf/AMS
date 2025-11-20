@@ -15,6 +15,6 @@ export class AuthController {
 
   @Get('login')
   async login(@Body() body: LoginDto) {
-    return this.gatewayService.signup(body);
+    return this.gatewayService.login(body);
   }
 }

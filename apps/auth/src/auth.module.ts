@@ -1,12 +1,15 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './app/auth.controller';
 import { AuthService } from './app/auth.service';
-import { RmqModule } from '@shared/rmq.module';
-import { SERVICES } from '@shared/constants';
-import { SharedModule } from '@shared/shared.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { RmqModule, SharedModule, User, UserSchema, SERVICES } from '@shared';
 
 @Module({
-  imports: [SharedModule, RmqModule.registerMultipleAsync([SERVICES.AUTH])],
+  imports: [
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    SharedModule,
+    RmqModule.registerMultipleAsync([SERVICES.AUTH]),
+  ],
   controllers: [AuthController],
   providers: [AuthService],
 })

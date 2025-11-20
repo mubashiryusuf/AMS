@@ -16,9 +16,11 @@
     "amqplib": "^0.10.9",
     "axios": "^1.6.0",
     "bcrypt": "^6.0.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
     "microservices": "^0.1.0",
     "mongoose": "^8.20.0",
-    "reflect-metadata": "^0.1.13",
+    "reflect-metadata": "^0.1.14",
     "rxjs": "^7.8.0"
   },
   "devDependencies": {
