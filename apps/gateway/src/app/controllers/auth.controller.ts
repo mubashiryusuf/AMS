@@ -1,20 +1,35 @@
-import { Body, Controller,  Get,  Post } from '@nestjs/common';
-import { GatewayService } from '../gateway.service';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { RegisterDto, LoginDto } from '@shared';
+import {
+  RegisterDto,
+  LoginDto,
+  ForgotPasswordDto,
+  ResetPasswordDto,
+} from '@shared';
+import { AuthService } from '../services/auth.service';
 
 @Controller()
 @ApiTags('Authentication')
 export class AuthController {
-  constructor(private readonly gatewayService: GatewayService) {}
+  constructor(private readonly gatewayService: AuthService) {}
 
   @Post('signup')
   async signup(@Body() body: RegisterDto) {
     return this.gatewayService.signup(body);
   }
 
-  @Get('login')
+  @Post('sigin')
   async login(@Body() body: LoginDto) {
     return this.gatewayService.login(body);
+  }
+
+  @Post('forgot-password')
+  async forgot(@Body() body: ForgotPasswordDto) {
+    return this.gatewayService.forgot(body);
+  }
+
+  @Post('reset-password')
+  async reset(@Body() body: ResetPasswordDto) {
+    return this.gatewayService.reset(body);
   }
 }

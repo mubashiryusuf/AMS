@@ -2,7 +2,6 @@ import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 @Schema({ timestamps: true })
-
 export class User extends Document {
   @Prop({ required: true })
   fullName: string;
@@ -15,6 +14,12 @@ export class User extends Document {
 
   @Prop({ enum: ['student', 'teacher', 'admin'], default: 'student' })
   role: string;
+
+  @Prop()
+  resetToken?: string;
+
+  @Prop()
+  resetTokenExpiry?: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

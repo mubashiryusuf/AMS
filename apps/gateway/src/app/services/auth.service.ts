@@ -1,10 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { LoginDto, RegisterDto, SERVICES } from '@shared';
+import {
+  ForgotPasswordDto,
+  LoginDto,
+  RegisterDto,
+  ResetPasswordDto,
+  SERVICES,
+} from '@shared';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
-export class GatewayService {
+export class AuthService {
   constructor(@Inject(SERVICES.AUTH) private authClient: ClientProxy) {}
 
   async signup(body: RegisterDto) {
@@ -17,7 +23,8 @@ export class GatewayService {
       console.error('Signup error:', error);
       return {
         status: 'error',
-        message: error?.message || error?.response?.message || 'Internal server error',
+        message:
+          error?.message || error?.response?.message || 'Internal server error',
         statusCode: error?.status || error?.statusCode || 500,
       };
     }
@@ -33,8 +40,33 @@ export class GatewayService {
       console.error('Login error:', error);
       return {
         status: 'error',
-        message: error?.message || error?.response?.message || 'Internal server error',
+        message:
+          error?.message || error?.response?.message || 'Internal server error',
         statusCode: error?.status || error?.statusCode || 500,
+      };
+    }
+  }
+
+  async forgot(body: ForgotPasswordDto) {
+    try {
+      return await firstValueFrom(this.authClient.send('auth.forgot', body));
+    } catch (error) {
+      return {
+        status: 'error',
+        message: error?.message || 'Failed',
+        statusCode: error?.statusCode || 500,
+      };
+    }
+  }
+
+  async reset(body: ResetPasswordDto) {
+    try {
+      return await firstValueFrom(this.authClient.send('auth.reset', body));
+    } catch (error) {
+      return {
+        status: 'error',
+        message: error?.message || 'Failed',
+        statusCode: error?.statusCode || 500,
       };
     }
   }
