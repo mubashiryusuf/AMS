@@ -3,11 +3,11 @@ import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 import { Types } from 'mongoose';
 
 export class CreateTeacherDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'Otiilia bilionare' })
   @IsNotEmpty()
   fullName: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'john.doe@example.com' })
   @IsEmail()
   email: string;
 

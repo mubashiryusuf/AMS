@@ -1,29 +1,29 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { StudentService } from './student.service';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateStudentDto } from '@shared';
+import { StudentService } from '../services/student.service';
 
-@Controller()
+@Controller('student')
+@ApiTags('Student')
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
-  // CREATE
-  @Post()
-  create(@Body() dto: CreateStudentDto) {
-    return this.studentService.create(dto);
+
+  @Post('create')
+  async create(@Body() body: CreateStudentDto) {
+    return this.studentService.create(body);
   }
 
-  // GET ALL
-  @Get()
-  findAll() {
+  @Get('all')
+  async getAllStudents() {
     return this.studentService.findAll();
   }
-   // GET BY ID
-  @Get(':id')
+
+   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.studentService.findOne(id);
   }
 
-  // UPDATE
-  @Patch(':id')
+  @Patch('update/:id')
   update(
     @Param('id') id: string,
     @Body() dto: Partial<CreateStudentDto>,
@@ -31,10 +31,8 @@ export class StudentController {
     return this.studentService.update(id, dto);
   }
 
-  // DELETE
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.studentService.remove(id);
+  @Delete('delete/:id')
+  delete(@Param('id') id: string) {
+    return this.studentService.delete(id);
   }
-
 }

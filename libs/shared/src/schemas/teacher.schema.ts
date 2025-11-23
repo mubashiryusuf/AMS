@@ -10,7 +10,7 @@ export class Teacher extends Document{
   email: string;
 
   @Prop({ type: [Types.ObjectId], ref: 'Class' })
-  classes: Types.ObjectId[];
+  classes?: Types.ObjectId[];
 }
 
 export const TeacherSchema = SchemaFactory.createForClass(Teacher);

@@ -3,15 +3,15 @@ import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 import { Types } from 'mongoose';
 
 export class CreateStudentDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'John Doe' })
   @IsNotEmpty()
   fullName: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'john.doe@example.com' })
   @IsEmail()
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: '25' })
   @IsOptional()
   age?: number;
 

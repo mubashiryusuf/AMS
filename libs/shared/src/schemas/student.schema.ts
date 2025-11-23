@@ -13,7 +13,7 @@ export class Student extends Document{
   age: number;
 
   @Prop({ type: Types.ObjectId, ref: 'Class' })
-  classId: Types.ObjectId;
+  classId?: Types.ObjectId;
 }
 
 export const StudentSchema = SchemaFactory.createForClass(Student);

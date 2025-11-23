@@ -1,15 +1,21 @@
 import { Module } from '@nestjs/common';
-import { AuthController } from './app/controllers/auth.controller';
 import { SERVICES, RmqModule, SharedModule } from '@shared';
-import { AuthService } from './app/services/auth.service';
+import {AuthController,ClassController,StudentController, TeacherController} from './app/controllers';
+import {AuthService,ClassService,StudentService, TeacherService} from './app/services';
 
 
 @Module({
   imports: [
     SharedModule,
-    RmqModule.registerMultipleAsync([SERVICES.AUTH]),
+    RmqModule.registerMultipleAsync([
+      SERVICES.AUTH,
+      SERVICES.STUDENT,
+      SERVICES.TEACHER,
+      SERVICES.CLASS,
+      SERVICES.ATTENDANCE
+    ]),
   ],
-  controllers: [AuthController],
-  providers: [AuthService],
+  controllers: [AuthController, StudentController,TeacherController, ClassController ],
+  providers: [AuthService, StudentService, TeacherService,ClassService],
 })
 export class GatewayModule {}
