@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CreateStudentDto } from '@shared';
+import { CreateStudentDto, UpdateStudentDto } from '@shared';
 import { StudentService } from '../services/student.service';
 
 @Controller('student')
@@ -19,20 +19,20 @@ export class StudentController {
   }
 
    @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.studentService.findOne(id);
   }
 
   @Patch('update/:id')
-  update(
+  async update(
     @Param('id') id: string,
-    @Body() dto: Partial<CreateStudentDto>,
+    @Body() body: UpdateStudentDto,
   ) {
-    return this.studentService.update(id, dto);
+    return this.studentService.update(id, body);
   }
 
   @Delete('delete/:id')
-  delete(@Param('id') id: string) {
+  async delete(@Param('id') id: string) {
     return this.studentService.delete(id);
   }
 }

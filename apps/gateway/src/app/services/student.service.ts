@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { CreateStudentDto, SERVICES } from '@shared';
+import { CreateStudentDto, SERVICES, UpdateStudentDto } from '@shared';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
@@ -24,7 +24,6 @@ export class StudentService {
     }
   }
 
-  // GET ALL STUDENTS
   async findAll() {
     try {
       return await firstValueFrom(
@@ -35,40 +34,37 @@ export class StudentService {
     }
   }
 
-  // GET STUDENT BY ID
   async findOne(id: string) {
     try {
       return await firstValueFrom(
-        this.studentClient.send('student.get-student', { id })
+        this.studentClient.send('student.get-student', id )
       );
     } catch (error) {
       return this.handleError(error);
     }
   }
 
-  // UPDATE STUDENT
-  async update(id: string, body: Partial<CreateStudentDto>) {
+
+  async update(id: string, body: UpdateStudentDto) {
     try {
       return await firstValueFrom(
-        this.studentClient.send('student.update-student', { id, ...body })
+        this.studentClient.send('student.update-student', { id, body })
       );
     } catch (error) {
       return this.handleError(error);
     }
   }
 
-  // DELETE STUDENT
   async delete(id: string) {
     try {
       return await firstValueFrom(
-        this.studentClient.send('student.delete-student', { id })
+        this.studentClient.send('student.delete-student', id )
       );
     } catch (error) {
       return this.handleError(error);
     }
   }
 
-  // COMMON ERROR HANDLER
   private handleError(error: any) {
     return {
       status: 'error',

@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 import { Types } from 'mongoose';
 
@@ -19,3 +19,5 @@ export class CreateStudentDto {
   @IsOptional()
   classId?: Types.ObjectId;
 }
+
+export class UpdateStudentDto extends PartialType(CreateStudentDto) {}

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateStudentDto, Student } from '@shared';
+import { CreateStudentDto, Student, UpdateStudentDto } from '@shared';
 import { Model } from 'mongoose';
 
 @Injectable()
@@ -20,17 +20,18 @@ export class StudentService {
   }
   // GET BY ID
   async findOne(id: string) {
-    const student = await this.studentModel.findById(id).populate('classId');
+    console.log(id);
+    const student = await this.studentModel.findById(id);
+    console.log(student);
     if (!student) throw new NotFoundException('Student not found');
     return student;
   }
 
   // UPDATE
-  async update(id: string, updateData: Partial<CreateStudentDto>) {
-    const updated = await this.studentModel.findByIdAndUpdate(id, updateData, {
+  async update(id: string, body: UpdateStudentDto) {
+    const updated = await this.studentModel.findByIdAndUpdate(id, body, {
       new: true,
     });
-
     if (!updated) throw new NotFoundException('Student not found');
     return updated;
   }

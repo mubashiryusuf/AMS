@@ -8,7 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { TeacherService } from '../services/teacher.service';
-import { CreateTeacherDto } from '@shared';
+import { CreateTeacherDto, UpdateTeacherDto } from '@shared';
 import { ApiTags } from '@nestjs/swagger';
 
 @Controller('teacher')
@@ -17,27 +17,27 @@ export class TeacherController {
   constructor(private readonly teacherService: TeacherService) {}
 
   @Post('create')
-  create(@Body() dto: CreateTeacherDto) {
+  async create(@Body() dto: CreateTeacherDto) {
     return this.teacherService.create(dto);
   }
 
   @Get('all')
-  findAll() {
+  async findAll() {
     return this.teacherService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.teacherService.findOne(id);
   }
 
   @Patch('update/:id')
-  update(@Param('id') id: string, @Body() dto: any) {
+  async update(@Param('id') id: string, @Body() dto: UpdateTeacherDto) {
     return this.teacherService.update(id, dto);
   }
 
   @Delete('delete/:id')
-  delete(@Param('id') id: string) {
+  async delete(@Param('id') id: string) {
     return this.teacherService.delete(id);
   }
 }

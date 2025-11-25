@@ -5,29 +5,26 @@ import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class ClassService {
-  constructor(
-    @InjectModel(Class.name) private classModel: Model<Class>,
-  ) {}
+  constructor(@InjectModel(Class.name) private classModel: Model<Class>) {}
 
   async create(dto: CreateClassDto): Promise<Class> {
     return await this.classModel.create(dto);
   }
 
   async findAll(): Promise<Class[]> {
-    return this.classModel.find().populate('teacherId');
+    return this.classModel.find();
   }
 
   async findOne(id: string): Promise<Class> {
-    const cls = await this.classModel.findById(id).populate('teacherId');
+    const cls = await this.classModel.findById(id);
     if (!cls) throw new NotFoundException('Class not found');
     return cls;
   }
 
   async update(id: string, dto: UpdateClassDto): Promise<Class> {
-    const updated = await this.classModel
-      .findByIdAndUpdate(id, dto, { new: true })
-      .populate('teacherId');
-
+    const updated = await this.classModel.findByIdAndUpdate(id, dto, {
+      new: true,
+    });
     if (!updated) throw new NotFoundException('Class not found');
     return updated;
   }

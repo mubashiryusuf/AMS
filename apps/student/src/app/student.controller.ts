@@ -1,40 +1,34 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Controller} from '@nestjs/common';
 import { StudentService } from './student.service';
-import { CreateStudentDto } from '@shared';
+import { CreateStudentDto, UpdateStudentDto } from '@shared';
+import { MessagePattern } from '@nestjs/microservices';
 
 @Controller()
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
-  // CREATE
-  @Post()
-  create(@Body() dto: CreateStudentDto) {
+
+  @MessagePattern('student.create-student')
+  async create(dto: CreateStudentDto) {
     return this.studentService.create(dto);
   }
 
-  // GET ALL
-  @Get()
-  findAll() {
+  @MessagePattern('student.get-all-students')
+  async findAll() {
     return this.studentService.findAll();
   }
-   // GET BY ID
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+
+  @MessagePattern('student.get-student')
+  async findOne(id: string) {
     return this.studentService.findOne(id);
   }
 
-  // UPDATE
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() dto: Partial<CreateStudentDto>,
-  ) {
-    return this.studentService.update(id, dto);
+  @MessagePattern('student.update-student')
+  async update(data:{id: string, body:UpdateStudentDto}) {
+    return this.studentService.update(data.id, data.body);
   }
 
-  // DELETE
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @MessagePattern('student.delete-student')
+  async remove(id: string) {
     return this.studentService.remove(id);
   }
-
 }

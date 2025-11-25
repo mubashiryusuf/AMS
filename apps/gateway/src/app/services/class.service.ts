@@ -9,11 +9,11 @@ export class ClassService {
   ) {}
 
   create(dto: CreateClassDto) {
-    return this.classClient.send('class.create', dto);
+    return this.classClient.send('class.create-class', dto);
   }
 
   findAll() {
-    return this.classClient.send('class.all', {});
+    return this.classClient.send('class.get-all-classes', {});
   }
 
   findOne(id: string) {
