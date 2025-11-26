@@ -9,6 +9,7 @@ export class StudentController {
 
   @MessagePattern('student.create-student')
   async create(dto: CreateStudentDto) {
+    console.log('create student', dto);
     return this.studentService.create(dto);
   }
 
@@ -17,10 +18,10 @@ export class StudentController {
     return this.studentService.findAll();
   }
 
-  @MessagePattern('student.get-student')
-  async findOne(id: string) {
-    return this.studentService.findOne(id);
-  }
+  // @MessagePattern('student.get-student')
+  // async findOne(id: string) {
+  //   return this.studentService.findOne(id);
+  // }
 
   @MessagePattern('student.update-student')
   async update(data:{id: string, body:UpdateStudentDto}) {

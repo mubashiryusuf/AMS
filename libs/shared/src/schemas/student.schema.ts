@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import mongoose, { Document, Types } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class Student extends Document{
@@ -12,8 +12,8 @@ export class Student extends Document{
   @Prop()
   age: number;
 
-  @Prop({ type: Types.ObjectId, ref: 'Class' })
-  classId?: Types.ObjectId;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Class' })
+  classId?: mongoose.Types.ObjectId;
 }
 
 export const StudentSchema = SchemaFactory.createForClass(Student);

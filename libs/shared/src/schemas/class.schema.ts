@@ -7,7 +7,7 @@ export class Class extends Document {
   name: string;
 
   @Prop({ type: Types.ObjectId, ref: 'Teacher' })
-  teacherId: Types.ObjectId;
+  teacherId?: Types.ObjectId;
 }
 
 export const ClassSchema = SchemaFactory.createForClass(Class);

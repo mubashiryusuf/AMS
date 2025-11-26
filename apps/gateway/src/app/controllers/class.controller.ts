@@ -8,6 +8,7 @@ export class ClassController {
 
   @Post()
   async create(@Body() dto: CreateClassDto) {
+    console.log('create class', dto);
     return this.classService.create(dto);
   }
 

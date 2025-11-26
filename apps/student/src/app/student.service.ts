@@ -10,21 +10,46 @@ export class StudentService {
   ) {}
   // CREATE
   async create(dto: CreateStudentDto) {
+    console.log('create student service', dto);
     const student = new this.studentModel(dto);
     return student.save();
   }
 
   // GET ALL
   async findAll() {
-    return this.studentModel.find().populate('classId');
-  }
-  // GET BY ID
-  async findOne(id: string) {
-    console.log(id);
-    const student = await this.studentModel.findById(id);
-    console.log(student);
-    if (!student) throw new NotFoundException('Student not found');
-    return student;
+    const result = await this.studentModel.aggregate([
+      {
+        $lookup: {
+          from: "classes",        
+          localField: "classId",      
+          foreignField: "_id",          
+          as: "classDetails"     
+                 // output array ka naam
+        },
+      },
+      {
+        $unwind: "$classDetails",
+      },
+      {
+        $project: {
+          _id: 1,
+          fullName: 1,
+          email: 1,
+          age: 1,
+          createdAt: 1,
+          classDetails: {
+            _id: '$classDetails._id',
+            name: '$classDetails.name',
+          },
+        },
+      },
+      {
+        $sort: {
+          createdAt: -1,
+        },
+      },
+    ]);
+    return result;
   }
 
   // UPDATE

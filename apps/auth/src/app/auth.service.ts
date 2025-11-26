@@ -16,14 +16,22 @@ import {
 } from '@shared';
 import { RpcException } from '@nestjs/microservices';
 import * as crypto from 'crypto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    
+    @InjectModel(User.name) private userModel: Model<User>,
+    private jwtService: JwtService,
+  ) {}
 
   async signup(dto: RegisterDto) {
     const exists = await this.userModel.findOne({ email: dto.email });
-    if (exists) throw new RpcException('Email already exists');
+    if (exists) throw new RpcException({
+      status: 'error',
+      message: 'Email already exists',
+    });
 
     const hashed = await bcrypt.hash(dto.password, 10);
 
@@ -40,42 +48,48 @@ export class AuthService {
 
   async login(dto: LoginDto) {
     const user = await this.userModel.findOne({ email: dto.email });
-    if (!user) throw new UnauthorizedException('Invalid credentials');
+    if (!user) throw new UnauthorizedException({
+      status: 'error',
+      message: 'Invalid credentials',
+    });
 
     const match = await bcrypt.compare(dto.password, user.password);
-    if (!match) throw new UnauthorizedException('Invalid credentials');
+    if (!match) throw new UnauthorizedException({
+      status: 'error',
+      message: 'Invalid credentials',
+    });
 
+    // generate jwt token 
+    const payload ={
+      sub: user._id,
+      email: user.email,
+      role: user.role,
+    };
+    const accessToken = this.jwtService.sign(payload);
 
     return {
       message: 'Login successful',
       user,
+      accessToken,
     };
   }
 
   async forgotPassword(dto: ForgotPasswordDto) {
     const user = await this.userModel.findOne({ email: dto.email });
     if (!user) throw new NotFoundException('User not found');
-
-    // 1. Generate plain token (send to user)
     const plainToken = crypto.randomBytes(32).toString('hex');
-
-    // 2. Hash the token before saving (security best practice)
     const hashedToken = await bcrypt.hash(plainToken, 10);
 
-    // 3. Save hashed token + expiry
     user.resetToken = hashedToken;
-    user.resetTokenExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
+    user.resetTokenExpiry = new Date(Date.now() + 15 * 60 * 1000);
     await user.save();
 
-    // 4. Create reset link with plain token
     const resetLink = `https://your-frontend.com/reset-password?token=${plainToken}`;
 
-    // OPTIONAL: Send email with resetLink
-    // await this.emailService.send(user.email, resetLink);
 
     return {
       message: 'Password reset link sent to your email',
-      resetLink, // for testing (remove in production)
+      resetLink, 
     };
   }
 
