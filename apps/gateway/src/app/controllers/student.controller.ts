@@ -8,7 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateStudentDto, UpdateStudentDto } from '@shared';
+import { CreateStudentDto, Roles, UpdateStudentDto } from '@shared';
 import { StudentService } from '../services/student.service';
 
 @Controller('student')
@@ -23,6 +23,7 @@ export class StudentController {
     return this.studentService.create(body);
   }
 
+  @Roles('student')
   @Get('all')
   async getAllStudents() {
     return this.studentService.findAll();

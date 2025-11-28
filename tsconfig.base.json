@@ -15,13 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@shared": ["libs/shared/src/index.ts"],
-      // "@shared/constants": ["libs/shared/src/constants/index.ts"],
-      // "@shared/rmq.module": ["libs/shared/src/lib/rmq.module.ts"],
-      // "@shared/database.module": ["libs/shared/src/lib/database.module.ts"],
-      // "@shared/shared.module": ["libs/shared/src/lib/shared.module.ts"],
-      // "@shared/dtos": ["libs/shared/src/dtos/index.ts"],
-      // "@shared/schemas": ["libs/shared/src/schemas/index.ts"],
+      "@shared": ["libs/shared/src"],
     }
   },
   "exclude": ["node_modules", "tmp"]

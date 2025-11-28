@@ -1,9 +1,11 @@
 import { Controller} from '@nestjs/common';
 import { StudentService } from './student.service';
-import { CreateStudentDto, UpdateStudentDto } from '@shared';
+import { CreateStudentDto, Roles, UpdateStudentDto } from '@shared';
 import { MessagePattern } from '@nestjs/microservices';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller()
+@ApiBearerAuth()
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
