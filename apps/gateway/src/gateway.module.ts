@@ -1,28 +1,42 @@
 import { Module } from '@nestjs/common';
-import { SERVICES, RmqModule, SharedModule,RoleBaseGuardsGuard ,AuthStrategy} from '@shared';
-import {AuthController,ClassController,StudentController, TeacherController} from './app/controllers';
-import {AuthService,ClassService,StudentService, TeacherService} from './app/services';
+import {
+  SERVICES,
+  RmqModule,
+  AuthStrategy,
+  SharedModule,
+  RoleBaseGuardsGuard,
+} from '@shared';
+import {
+  AttendanceController,
+  AuthController,
+  ClassController,
+} from './app/controllers';
+import { AttendanceService, AuthService, ClassService } from './app/services';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
+
 @Module({
   imports: [
-    JwtModule,
+    JwtModule.register({
+      secret: process.env.JWT_SECRET || 'MY_SUPER_SECRET_KEY',
+    }),
     SharedModule,
     RmqModule.registerMultipleAsync([
       SERVICES.AUTH,
-      SERVICES.STUDENT,
-      SERVICES.TEACHER,
       SERVICES.CLASS,
-      SERVICES.ATTENDANCE
+      SERVICES.ATTENDANCE,
     ]),
   ],
-  controllers: [AuthController, StudentController,TeacherController, ClassController ],
+  controllers: [AuthController, ClassController, AttendanceController],
   providers: [
     AuthStrategy,
     {
       provide: APP_GUARD,
       useClass: RoleBaseGuardsGuard,
     },
-    AuthService, StudentService, TeacherService,ClassService],
+    AuthService,
+    ClassService,
+    AttendanceService,
+  ],
 })
 export class GatewayModule {}

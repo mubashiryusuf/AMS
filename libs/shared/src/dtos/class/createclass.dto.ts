@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsMongoId, IsNotEmpty, IsOptional } from 'class-validator';
 import { Types } from 'mongoose';
 
 export class CreateClassDto {
@@ -9,6 +9,7 @@ export class CreateClassDto {
 
   @ApiProperty({ example: '65d3d2f97bda23f9c2332ab1', required: false })
   @IsOptional()
+  @IsMongoId()
   teacherId?: Types.ObjectId;
 }
 

@@ -1,34 +1,57 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { ROLES_KEY } from './roles.decorator';
- 
+
 @Injectable()
 export class RoleBaseGuardsGuard implements CanActivate {
   constructor(private reflector: Reflector, private jwtService: JwtService) {}
-  canActivate(
-    context: ExecutionContext,
-  ): boolean {
-    const requiredRoles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
- 
+
+  canActivate(context: ExecutionContext): boolean {
+    const requiredRoles = this.reflector.getAllAndOverride<string[]>(
+      ROLES_KEY,
+      [context.getHandler(), context.getClass()],
+    );
+
+    // If no roles are specified, allow access
     if (!requiredRoles) {
       return true;
     }
- 
+
     const request = context.switchToHttp().getRequest();
     const authHeader = request.headers['authorization'];
- 
+
     if (!authHeader) {
-      throw new UnauthorizedException('Jwt token missing!');
+      throw new UnauthorizedException('JWT token missing!');
     }
- 
+
     const token = authHeader.split(' ')[1];
-    const decoded = this.jwtService.verify(token);
- 
-    return requiredRoles.some((role) => decoded.role === role);
+    if (!token) {
+      throw new UnauthorizedException('JWT token missing!');
+    }
+
+    let decoded: any;
+    try {
+      // Verify token using JwtService
+      decoded = this.jwtService.verify(token);
+    } catch (err) {
+      throw new UnauthorizedException('Invalid JWT token');
+    }
+
+    // Attach decoded token to request for controllers to use
+    request.user = decoded;
+
+    // Check if the user role matches the required roles
+    const hasRole = requiredRoles.some((role) => decoded.role === role);
+    if (!hasRole) {
+      throw new UnauthorizedException("You don't have access to this route");
+    }
+
+    return true;
   }
 }
- 

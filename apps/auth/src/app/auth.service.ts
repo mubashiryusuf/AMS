@@ -21,17 +21,18 @@ import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {
   constructor(
-    
     @InjectModel(User.name) private userModel: Model<User>,
-    private jwtService: JwtService,
+    private jwtService: JwtService
   ) {}
 
   async signup(dto: RegisterDto) {
     const exists = await this.userModel.findOne({ email: dto.email });
-    if (exists) throw new RpcException({
-      status: 'error',
-      message: 'Email already exists',
-    });
+    if (exists)
+      throw new RpcException({
+        status: 'error',
+        message: 'Email already exists',
+        code: 401,
+      });
 
     const hashed = await bcrypt.hash(dto.password, 10);
 
@@ -48,19 +49,23 @@ export class AuthService {
 
   async login(dto: LoginDto) {
     const user = await this.userModel.findOne({ email: dto.email });
-    if (!user) throw new UnauthorizedException({
-      status: 'error',
-      message: 'Invalid credentials',
-    });
+    if (!user)
+      throw new RpcException({
+        status: false,
+        message: 'Invalid credentials',
+        code: 401,
+      });
 
     const match = await bcrypt.compare(dto.password, user.password);
-    if (!match) throw new UnauthorizedException({
-      status: 'error',
-      message: 'Invalid credentials',
-    });
+    if (!match)
+      throw new RpcException({
+        status: false,
+        message: 'Invalid credentials',
+        code: 401,
+      });
 
-    // generate jwt token 
-    const payload ={
+    // generate jwt token
+    const payload = {
       sub: user._id,
       email: user.email,
       role: user.role,
@@ -86,10 +91,9 @@ export class AuthService {
 
     const resetLink = `https://your-frontend.com/reset-password?token=${plainToken}`;
 
-
     return {
       message: 'Password reset link sent to your email',
-      resetLink, 
+      resetLink,
     };
   }
 
