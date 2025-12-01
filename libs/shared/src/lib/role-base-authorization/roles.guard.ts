@@ -18,13 +18,17 @@ export class RoleBaseGuardsGuard implements CanActivate {
       [context.getHandler(), context.getClass()],
     );
 
-    // If no roles are specified, allow access
+    console.log(requiredRoles);
+
     if (!requiredRoles) {
       return true;
     }
 
     const request = context.switchToHttp().getRequest();
+    console.log(request.headers);
     const authHeader = request.headers['authorization'];
+
+    console.log(authHeader);
 
     if (!authHeader) {
       throw new UnauthorizedException('JWT token missing!');
@@ -37,16 +41,11 @@ export class RoleBaseGuardsGuard implements CanActivate {
 
     let decoded: any;
     try {
-      // Verify token using JwtService
       decoded = this.jwtService.verify(token);
     } catch (err) {
       throw new UnauthorizedException('Invalid JWT token');
     }
-
-    // Attach decoded token to request for controllers to use
     request.user = decoded;
-
-    // Check if the user role matches the required roles
     const hasRole = requiredRoles.some((role) => decoded.role === role);
     if (!hasRole) {
       throw new UnauthorizedException("You don't have access to this route");

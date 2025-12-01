@@ -1,12 +1,12 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ClassService } from '../services/class.service';
 import { CreateClassDto, Roles, UpdateClassDto } from '@shared';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @Controller('class')
 @ApiTags('Classes')
 @ApiBearerAuth()
-// @ApiResponse({ status: 401, description: `You don't have access to this route `})
+
 export class ClassController {
   constructor(private readonly classService: ClassService) {}
 
