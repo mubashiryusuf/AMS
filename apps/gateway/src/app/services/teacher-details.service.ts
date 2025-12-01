@@ -4,7 +4,7 @@ import { CreateTeacherDto, SERVICES, UpdateTeacherDto } from '@shared';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
-export class TeacherService {
+export class TeacherDetailsService {
   constructor(@Inject(SERVICES.TEACHER) private teacherClient: ClientProxy) {}
 
   private handleError(error: any) {
@@ -26,13 +26,6 @@ export class TeacherService {
   async findAll() {
     return firstValueFrom(
       this.teacherClient.send('teacher.all-teachers', {})
-    ).catch((err) => this.handleError(err));
-  }
-
-  // FIND ONE
-  async findOne(id: string) {
-    return firstValueFrom(
-      this.teacherClient.send('teacher.teacher',  id )
     ).catch((err) => this.handleError(err));
   }
 

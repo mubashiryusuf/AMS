@@ -13,11 +13,11 @@ export class RegisterDto {
   @IsNotEmpty()
   fullName: string;
 
-  @ApiProperty({ example: 'john.doe@example.com' })
+  @ApiProperty({ example: 'john.doe@yopmail.com' })
   @IsEmail()
   email: string;
 
-  @ApiProperty({ example: 'password123' })
+  @ApiProperty({ example: 'Test@123' })
   @MinLength(6)
   password: string;
 
@@ -26,13 +26,9 @@ export class RegisterDto {
   @IsOptional()
   role?: string;
 
-  @ApiProperty({ example: '1661871629837892' })
+  @ApiProperty({ example: '01' })
+  @IsNotEmpty()
   @IsOptional()
-  @IsMongoId()
-  classId?: string;
+  roleNo?: string;
 
-  @ApiProperty({ example: '2765176523' })
-  @IsOptional()
-  @IsArray()
-  teacherSubjects?: string[];
 }

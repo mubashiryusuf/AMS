@@ -1,5 +1,4 @@
 export * from './auth.controller'
-export * from './student.controller'
-export * from './teacher.controller'
+export * from './teacher-details.controller'
 export * from './class.controller'
 export * from './attendance.controller'

@@ -1,21 +1,21 @@
 {
-  "name": "teacher",
+  "name": "teacher-details",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/teacher/src",
+  "sourceRoot": "apps/teacher-details/src",
   "projectType": "application",
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",
-      "outputs": ["{workspaceRoot}/dist/apps/teacher"],
+      "outputs": ["{workspaceRoot}/dist/apps/teacher-details"],
       "defaultConfiguration": "production",
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/apps/teacher",
-        "main": "apps/teacher/src/main.ts",
-        "tsConfig": "apps/teacher/tsconfig.app.json",
-        "assets": ["apps/teacher/src/assets"],
-        "webpackConfig": "apps/teacher/webpack.config.js"
+        "outputPath": "dist/apps/teacher-details",
+        "main": "apps/teacher-details/src/main.ts",
+        "tsConfig": "apps/teacher-details/tsconfig.app.json",
+        "assets": ["apps/teacher-details/src/assets"],
+        "webpackConfig": "apps/teacher-details/webpack.config.js"
       },
       "configurations": {
         "development": {
@@ -39,8 +39,8 @@
       "cache": true,
       "executor": "@nx/js:prune-lockfile",
       "outputs": [
-        "{workspaceRoot}/dist/apps/teacher/package.json",
-        "{workspaceRoot}/dist/apps/teacher/pnpm-lock.yaml"
+        "{workspaceRoot}/dist/apps/teacher-details/package.json",
+        "{workspaceRoot}/dist/apps/teacher-details/pnpm-lock.yaml"
       ],
       "options": {
         "buildTarget": "build"
@@ -49,7 +49,7 @@
     "copy-workspace-modules": {
       "dependsOn": ["build"],
       "cache": true,
-      "outputs": ["{workspaceRoot}/dist/apps/teacher/workspace_modules"],
+      "outputs": ["{workspaceRoot}/dist/apps/teacher-details/workspace_modules"],
       "executor": "@nx/js:copy-workspace-modules",
       "options": {
         "buildTarget": "build"
@@ -65,15 +65,15 @@
       "defaultConfiguration": "development",
       "dependsOn": ["build"],
       "options": {
-        "buildTarget": "teacher:build",
+        "buildTarget": "teacher-details:build",
         "runBuildTargetDependencies": false
       },
       "configurations": {
         "development": {
-          "buildTarget": "teacher:build:development"
+          "buildTarget": "teacher-details:build:development"
         },
         "production": {
-          "buildTarget": "teacher:build:production"
+          "buildTarget": "teacher-details:build:production"
         }
       }
     }

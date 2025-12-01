@@ -18,18 +18,12 @@ export class RoleBaseGuardsGuard implements CanActivate {
       [context.getHandler(), context.getClass()],
     );
 
-    console.log(requiredRoles);
-
     if (!requiredRoles) {
       return true;
     }
 
     const request = context.switchToHttp().getRequest();
-    console.log(request.headers);
     const authHeader = request.headers['authorization'];
-
-    console.log(authHeader);
-
     if (!authHeader) {
       throw new UnauthorizedException('JWT token missing!');
     }

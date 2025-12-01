@@ -10,8 +10,9 @@ import {
   AttendanceController,
   AuthController,
   ClassController,
+  TeacherDetailsController,
 } from './app/controllers';
-import { AttendanceService, AuthService, ClassService } from './app/services';
+import { AttendanceService, AuthService, ClassService, TeacherDetailsService } from './app/services';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 
@@ -25,9 +26,10 @@ import { JwtModule } from '@nestjs/jwt';
       SERVICES.AUTH,
       SERVICES.CLASS,
       SERVICES.ATTENDANCE,
+      SERVICES.TEACHER,
     ]),
   ],
-  controllers: [AuthController, ClassController, AttendanceController],
+  controllers: [AuthController, ClassController, AttendanceController,TeacherDetailsController],
   providers: [
     AuthStrategy,
     {
@@ -37,6 +39,7 @@ import { JwtModule } from '@nestjs/jwt';
     AuthService,
     ClassService,
     AttendanceService,
+    TeacherDetailsService
   ],
 })
 export class GatewayModule {}

@@ -21,13 +21,8 @@ export class User extends Document {
   @Prop()
   resetTokenExpiry?: Date;
 
-  // Optional: student only
-  @Prop({ type: Types.ObjectId, ref: 'Class' })
-  classId?: Types.ObjectId;
-
-  // Optional: teacher only
-  @Prop({ type: [String] })
-  teacherSubjects?: string[];
+  @Prop()
+  roleNo?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

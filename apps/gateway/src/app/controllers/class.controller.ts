@@ -17,25 +17,25 @@ export class ClassController {
   }
 
   @Roles('admin', 'teacher')
-  @Get()
+  @Get('get-all')
   async findAll() {
     return this.classService.findAll();
   }
 
   @Roles('admin', 'teacher')
-  @Get(':id')
+  @Get('get-class/:id')
   async findOne(@Param('id') id: string) {
     return this.classService.findOne(id);
   }
 
   @Roles('admin')
-  @Patch(':id')
+  @Patch('update-class/:id')
   async update(@Param('id') id: string, @Body() dto: UpdateClassDto) {
     return this.classService.update(id, dto);
   }
 
   @Roles('admin')
-  @Delete(':id')
+  @Delete('delete-class/:id')
   async delete(@Param('id') id: string) {
     return this.classService.remove(id);
   }

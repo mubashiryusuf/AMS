@@ -1,5 +1,4 @@
 export * from './auth.service'
-export * from './student.service'
-export * from './teacher.service'
+export * from './teacher-details.service'
 export * from './class.service'
 export * from './attendance.service'

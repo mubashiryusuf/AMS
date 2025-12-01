@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { TeacherModule } from './teacher.module';
+import { TeacherModule } from './teacher-details.module';
 import { Transport } from '@nestjs/microservices';
 import { SERVICES } from '@shared';
 
