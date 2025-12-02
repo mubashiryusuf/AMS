@@ -1,10 +1,9 @@
-// teacher-details.dto.ts
 import { ApiProperty } from '@nestjs/swagger';
 import { IsMongoId, IsNotEmpty } from 'class-validator';
+import { PartialType } from '@nestjs/mapped-types';
 
 export class CreateTeacherDetailsDto {
   @ApiProperty()
-  @IsMongoId()
   @IsNotEmpty()
   teacherId: string;
 
@@ -12,12 +11,11 @@ export class CreateTeacherDetailsDto {
   @IsMongoId()
   @IsNotEmpty()
   classId: string;
+
+  @ApiProperty()
+  @IsMongoId()
+  @IsNotEmpty()
+  studentId: string;
 }
 
-export class UpdateTeacherDetailsDto {
-  @IsMongoId()
-  teacherId?: string;
-
-  @IsMongoId()
-  classId?: string;
-}
+export class UpdateTeacherDetailsDto extends PartialType(CreateTeacherDetailsDto) {}

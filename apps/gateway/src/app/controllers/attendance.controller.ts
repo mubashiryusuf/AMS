@@ -13,8 +13,7 @@ export class AttendanceController {
   @Post('mark')
   @Roles('teacher')
   async markAttendance(@Body() dto: MarkAttendanceDto, @Req() req) {
-    // const teacherId = req.user.userId;
-     const teacherId = req.user?.sub;
+    const teacherId = req.user?.sub;
     return this.attendanceService.markAttendance(dto, teacherId);
   }
 

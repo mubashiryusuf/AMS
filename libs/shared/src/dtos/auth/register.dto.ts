@@ -1,8 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsArray,
   IsEmail,
-  IsMongoId,
   IsNotEmpty,
   IsOptional,
   MinLength,
@@ -27,8 +25,10 @@ export class RegisterDto {
   role?: string;
 
   @ApiProperty({ example: '01' })
-  @IsNotEmpty()
   @IsOptional()
   roleNo?: string;
 
+  @ApiProperty({ example: '01' })
+  @IsOptional()
+  teacherId?: string;
 }

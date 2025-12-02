@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { CreateTeacherDto, SERVICES, UpdateTeacherDto } from '@shared';
+import { CreateTeacherDetailsDto, SERVICES, UpdateTeacherDetailsDto } from '@shared';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
@@ -16,30 +16,32 @@ export class TeacherDetailsService {
   }
 
   // CREATE
-  async create(body: CreateTeacherDto) {
+  async create(body: CreateTeacherDetailsDto) {
     return firstValueFrom(
-      this.teacherClient.send('teacher.create-teacher', body)
+      this.teacherClient.send('teacherDetails.create', body)
     ).catch((err) => this.handleError(err));
   }
 
   // FIND ALL
   async findAll() {
     return firstValueFrom(
-      this.teacherClient.send('teacher.all-teachers', {})
+      this.teacherClient.send('teacherDetails.get-all', {})
     ).catch((err) => this.handleError(err));
   }
 
-  // UPDATE
-  async update(id: string, body: UpdateTeacherDto) {
+
+  // FIND ONE
+  async findOne(id: string) {
     return firstValueFrom(
-      this.teacherClient.send('teacher.update-teacher', { id, body })
+      this.teacherClient.send('teacherDetails.get-one', id)
     ).catch((err) => this.handleError(err));
   }
+
 
   // DELETE
   async delete(id: string) {
     return firstValueFrom(
-      this.teacherClient.send('teacher.delete-teacher',  id )
+      this.teacherClient.send('teacherDetails.delete', id)
     ).catch((err) => this.handleError(err));
   }
 }
