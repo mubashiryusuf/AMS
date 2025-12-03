@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './notifications.module';
+import { AppModule } from './activity-log.module';
 import { Transport } from '@nestjs/microservices';
 import { SERVICES } from '@shared';
 

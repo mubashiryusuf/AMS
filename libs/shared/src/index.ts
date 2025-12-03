@@ -6,3 +6,4 @@ export * from './schemas';
 export * from './dtos';
 export * from './enums';
 export * from './lib/role-base-authorization';
+export * from './audit/index';

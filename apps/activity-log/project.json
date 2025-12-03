@@ -1,21 +1,21 @@
 {
-  "name": "notifications",
+  "name": "activity-log",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/notifications/src",
+  "sourceRoot": "apps/activity-log/src",
   "projectType": "application",
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",
-      "outputs": ["{workspaceRoot}/dist/apps/notifications"],
+      "outputs": ["{workspaceRoot}/dist/apps/activity-log"],
       "defaultConfiguration": "production",
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/apps/notifications",
-        "main": "apps/notifications/src/main.ts",
-        "tsConfig": "apps/notifications/tsconfig.app.json",
-        "assets": ["apps/notifications/src/assets"],
-        "webpackConfig": "apps/notifications/webpack.config.js"
+        "outputPath": "dist/apps/activity-log",
+        "main": "apps/activity-log/src/main.ts",
+        "tsConfig": "apps/activity-log/tsconfig.app.json",
+        "assets": ["apps/activity-log/src/assets"],
+        "webpackConfig": "apps/activity-log/webpack.config.js"
       },
       "configurations": {
         "development": {
@@ -39,8 +39,8 @@
       "cache": true,
       "executor": "@nx/js:prune-lockfile",
       "outputs": [
-        "{workspaceRoot}/dist/apps/notifications/package.json",
-        "{workspaceRoot}/dist/apps/notifications/pnpm-lock.yaml"
+        "{workspaceRoot}/dist/apps/activity-log/package.json",
+        "{workspaceRoot}/dist/apps/activity-log/pnpm-lock.yaml"
       ],
       "options": {
         "buildTarget": "build"
@@ -49,7 +49,7 @@
     "copy-workspace-modules": {
       "dependsOn": ["build"],
       "cache": true,
-      "outputs": ["{workspaceRoot}/dist/apps/notifications/workspace_modules"],
+      "outputs": ["{workspaceRoot}/dist/apps/activity-log/workspace_modules"],
       "executor": "@nx/js:copy-workspace-modules",
       "options": {
         "buildTarget": "build"
@@ -65,15 +65,15 @@
       "defaultConfiguration": "development",
       "dependsOn": ["build"],
       "options": {
-        "buildTarget": "notifications:build",
+        "buildTarget": "activity-log:build",
         "runBuildTargetDependencies": false
       },
       "configurations": {
         "development": {
-          "buildTarget": "notifications:build:development"
+          "buildTarget": "activity-log:build:development"
         },
         "production": {
-          "buildTarget": "notifications:build:production"
+          "buildTarget": "activity-log:build:production"
         }
       }
     }

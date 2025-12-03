@@ -5,6 +5,7 @@ import {
   AuthStrategy,
   SharedModule,
   RoleBaseGuardsGuard,
+  AuditInterceptor,
 } from '@shared';
 import {
   AttendanceController,
@@ -12,9 +13,15 @@ import {
   ClassController,
   TeacherDetailsController,
 } from './app/controllers';
-import { AttendanceService, AuthService, ClassService, TeacherDetailsService } from './app/services';
-import { APP_GUARD } from '@nestjs/core';
+import {
+  AttendanceService,
+  AuthService,
+  ClassService,
+  TeacherDetailsService,
+} from './app/services';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
@@ -28,18 +35,37 @@ import { JwtModule } from '@nestjs/jwt';
       SERVICES.ATTENDANCE,
       SERVICES.TEACHER,
     ]),
+    ClientsModule.register([
+      {
+        name: 'AUDIT_CLIENT',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://localhost:5672'],
+          queue: 'audit-queue',
+        },
+      },
+    ]),
   ],
-  controllers: [AuthController, ClassController, AttendanceController,TeacherDetailsController],
+  controllers: [
+    AuthController,
+    ClassController,
+    AttendanceController,
+    TeacherDetailsController,
+  ],
   providers: [
     AuthStrategy,
     {
       provide: APP_GUARD,
       useClass: RoleBaseGuardsGuard,
     },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AuditInterceptor,
+    },
     AuthService,
     ClassService,
     AttendanceService,
-    TeacherDetailsService
+    TeacherDetailsService,
   ],
 })
 export class GatewayModule {}
